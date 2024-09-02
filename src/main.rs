@@ -94,7 +94,7 @@ unsafe fn create_vao(vertices: &Vec<f32>, indices: &Vec<u32>) -> u32 {
         3,
         gl::FLOAT,
         gl::FALSE,
-        (6 * std::mem::size_of::<f32>()) as gl::types::GLint,
+        (3 * std::mem::size_of::<f32>()) as gl::types::GLint,
         std::ptr::null(),
     );
 
@@ -184,20 +184,28 @@ fn main() {
 
         // == // Set up your VAO around here
         let vertices: Vec<f32> = vec![
-            0.6, -0.6, 0.0, 
-            0.6, -0.6, 0.0, 
-            0.6, 0.6, 0.0,
+            0.5, 0.5, 0.0, 
+            0.5, 0.1, 0.0, 
+            0.1, 0.5, 0.0,
             
-             -1.0, -1.0, 0.0, 
-             1.0, 1.0, 0.0, 
-             -1.0,  1.0, 0.0,
+            -0.2, -0.2, 0.0, 
+            -0.5, -0.8, 0.0, 
+            -0.8,  -0.2, 0.0,
 
-             0.2, -0.2, 0.0, 
-             0.2, -0.2,0.0, 
-             0.2, 0.2, 0.0,
+            0.4, 0.1, 0.0,
+            0.4, -0.1, 0.0, 
+            -0.4, -0.1, 0.0,
+
+            -0.2, 0.5, 0.0,
+            -0.8, 0.1, 0.0, 
+            -0.8, 0.5, 0.0, 
+
+            0.1, -0.8, 0.0,
+            0.1, -0.5, 0.0, 
+            0.5, -0.5, 0.0 
         ];
 
-        let indices: Vec<u32> = vec![3,4,5,2,1,0];
+        let indices: Vec<u32> = vec![1,0,2,4,3,5,7,6,8,10,9,11,13,12,14];
         let my_vao = unsafe { create_vao(&vertices, &indices) };
 
         // == // Set up your shaders here
@@ -289,7 +297,7 @@ fn main() {
                 simple_shader.activate();
                
                 gl::BindVertexArray(my_vao);
-                gl::DrawElements(gl::TRIANGLES, 6, gl::UNSIGNED_INT, ptr::null());
+                gl::DrawElements(gl::TRIANGLES, 15, gl::UNSIGNED_INT, ptr::null());
                 gl::BindVertexArray(0);
                 
             }
