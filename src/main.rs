@@ -183,8 +183,22 @@ fn main() {
         }
 
         // == // Set up your VAO around here
+        let vertices: Vec<f32> = vec![
+            0.6, -0.6, 0.0, 
+            0.6, -0.6, 0.0, 
+            0.6, 0.6, 0.0,
+            
+             -1.0, -1.0, 0.0, 
+             1.0, 1.0, 0.0, 
+             -1.0,  1.0, 0.0,
 
-        let my_vao = unsafe { 1337 };
+             0.2, -0.2, 0.0, 
+             0.2, -0.2,0.0, 
+             0.2, 0.2, 0.0,
+        ];
+
+        let indices: Vec<u32> = vec![3,4,5,2,1,0];
+        let my_vao = unsafe { create_vao(&vertices, &indices) };
 
         // == // Set up your shaders here
 
@@ -201,6 +215,10 @@ fn main() {
                 .attach_file("./shaders/simple.frag")
                 .link()
         };
+
+        unsafe {
+           
+        }
 
         /*  let fragment_shader = unsafe {
                    shader::ShaderBuilder::new()
@@ -268,14 +286,12 @@ fn main() {
                 gl::Clear(gl::COLOR_BUFFER_BIT | gl::DEPTH_BUFFER_BIT);
 
                 // == // Issue the necessary gl:: commands to draw your scene here
-                let vertices: Vec<f32> = vec![-0.6, -0.6, 0.0, 0.6, -0.6, 0.0, 0.0, 0.6, 0.0];
-
-                let indices: Vec<u32> = vec![2, 1, 0];
-                let vao = create_vao(&vertices, &indices);
                 simple_shader.activate();
-                gl::BindVertexArray(vao);
-                gl::DrawElements(gl::TRIANGLES, 3, gl::UNSIGNED_INT, ptr::null());
+               
+                gl::BindVertexArray(my_vao);
+                gl::DrawElements(gl::TRIANGLES, 6, gl::UNSIGNED_INT, ptr::null());
                 gl::BindVertexArray(0);
+                
             }
 
             // Display the new color buffer on the display
