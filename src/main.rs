@@ -89,16 +89,28 @@ unsafe fn create_vao(vertices: &Vec<f32>, indices: &Vec<u32>) -> u32 {
         gl::STATIC_DRAW,
     );
 
+    
     gl::VertexAttribPointer(
         0,
         3,
         gl::FLOAT,
         gl::FALSE,
-        (3 * std::mem::size_of::<f32>()) as gl::types::GLint,
+        (6 * std::mem::size_of::<f32>()) as gl::types::GLint,
         std::ptr::null(),
     );
 
     gl::EnableVertexAttribArray(0);
+
+    gl::VertexAttribPointer(
+        1,
+        3,
+        gl::FLOAT,
+        gl::FALSE,
+        (3 * std::mem::size_of::<f32>()) as gl::types::GLint,
+        (3 * std::mem::size_of::<f32>()) as *const _,
+    );
+
+    gl::EnableVertexAttribArray(1);
 
     let mut ibo: gl::types::GLuint = 0;
 
@@ -184,9 +196,14 @@ fn main() {
 
         // == // Set up your VAO around here
         let vertices: Vec<f32> = vec![
-            0.5, 0.5, 0.0, 
-            0.5, 0.1, 0.0, 
-            0.1, 0.5, 0.0,
+            0.5, 0.5, 0.0,  0.8, 0.1, 0.8,
+            0.5, 0.1, 0.0,  0.0, 0.1, 0.0,
+            0.1, 0.5, 0.0,  0.8, 0.0, 0.1,
+
+            1.0, 0.5, 0.0,   0.8, 0.0, 0.1,
+
+            0.5, 1.0, 0.0,  0.0, 0.1, 0.0,
+           
             
             -0.2, -0.2, 0.0, 
             -0.5, -0.8, 0.0, 
@@ -202,10 +219,21 @@ fn main() {
 
             0.1, -0.8, 0.0,
             0.1, -0.5, 0.0, 
-            0.5, -0.5, 0.0 
+            0.5, -0.5, 0.0 ,
+
+            0.6, -0.8, -1.2,  // vertex value given in the assignment 
+            0.0,  0.4,  0.0,
+            -0.8, -0.2, 1.2,
+
+            -0.4,-0.8,0.0,
+            0.8, 0.1,0.0,
+            0.6, 0.4,0.0
+
         ];
 
-        let indices: Vec<u32> = vec![1,0,2,4,3,5,7,6,8,10,9,11,13,12,14];
+        // let indices: Vec<u32> = vec![1,0,2,4,3,5,7,6,8,10,9,11,13,12,14];
+        // let indices: Vec<u32> = vec![1,0,2,4,3,5,6,7,8,10,9,11,13,12,14];
+         let indices: Vec<u32> = vec![1,0,2,1,3,0,2,0,4];
         let my_vao = unsafe { create_vao(&vertices, &indices) };
 
         // == // Set up your shaders here
@@ -297,7 +325,7 @@ fn main() {
                 simple_shader.activate();
                
                 gl::BindVertexArray(my_vao);
-                gl::DrawElements(gl::TRIANGLES, 15, gl::UNSIGNED_INT, ptr::null());
+                gl::DrawElements(gl::TRIANGLES, 9, gl::UNSIGNED_INT, ptr::null());
                 gl::BindVertexArray(0);
                 
             }
